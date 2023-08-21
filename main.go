@@ -22,6 +22,7 @@ var albums = []album{
 func main() {
 	router := gin.Default()
 	router.GET("/albums", getAlbums)
+	router.GET("/albums/:id", getAlbumById)
 	router.POST("/albums", postAlbums)
 
 	router.Run("localhost:8080")
@@ -29,6 +30,19 @@ func main() {
 
 func getAlbums(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, albums)
+}
+
+func getAlbumById(c *gin.Context) {
+	id := c.Param("id")
+
+	for i := 0; i < len(albums); i++ {
+		if albums[i].ID == id {
+			c.IndentedJSON(http.StatusOK, albums[i])
+			return
+		}
+	}
+
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
 }
 
 func postAlbums(c *gin.Context) {
