@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://unpkg.com/htmx.org@1.9.4"
+        integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script id="albums" type="nunjucks">
+        {% for gist in gists %}
+        <li>
+            <a href="{{gist.html_url}}">{{gist.parsed.title}}</a><br>
+            <small>{{gist.parsed.description}}</small>
+        </li>
+        {% endfor %}
+    </script>
+    <title>Jazz Repository</title>
+</head>
+
+<body>
+    <section hx-ext="client-side-templates">
+        <button hx-get="http://localhost:8080/albums" hx-target="#list" hx-swap="innerHTML" nunjucks-template="albums"
+            hx-trigger="load, click">
+            Here
+        </button>
+
+        <ul id="list"></ul>
+    </section>
+</body>
+
+</html>
