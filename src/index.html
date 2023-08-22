@@ -5,13 +5,17 @@
     <script src="https://unpkg.com/htmx.org@1.9.4"
         integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jazz</title>
 </head>
 
 <body>
-    Hello World!
+    <button hx-get="http://localhost:8080/albums" hx-swap="innerHTML" hx-target="#albums">
+        Get Albums
+    </button>
+    <section id="albums"></section>
 </body>
 
 </html>

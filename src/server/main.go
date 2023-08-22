@@ -1,9 +1,9 @@
 package main
 
 import (
+	"html/template"
+	"log"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 type album struct {
@@ -13,51 +13,48 @@ type album struct {
 	Price  float64 `json:"price"`
 }
 
-var albums = []album{
+var albumList = []album{
 	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
 	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
 func main() {
-
-	// http.HandleFunc("/albums/", album)
-	router := gin.Default()
-	router.GET("/albums", getAlbums)
-	router.GET("/albums/:id", getAlbumById)
-	router.POST("/albums", postAlbums)
-
-	router.Run("localhost:8080")
+	http.HandleFunc("/albums", CORS(albums))
+	// http.HandleFunc("/albums/", albums)
+	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 }
 
-// func album(writer http.ResponseWriter, request http.Request) {
-// 	fmt.
-// }
-
-func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, albums)
+func albums(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "albums", &albumList[1])
 }
 
-func getAlbumById(c *gin.Context) {
-	id := c.Param("id")
+func CORS(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
+		w.Header().Add("Access-Control-Allow-Credentials", "true")
+		w.Header().Add("Access-Control-Allow-Headers", "*")
+		w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 
-	for i := 0; i < len(albums); i++ {
-		if albums[i].ID == id {
-			c.IndentedJSON(http.StatusOK, albums[i])
+		if r.Method == "OPTIONS" {
+			http.Error(w, "No Content", http.StatusNoContent)
 			return
 		}
-	}
 
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+		next(w, r)
+	}
 }
 
-func postAlbums(c *gin.Context) {
-	var newAlbum album
-
-	if err := c.BindJSON(&newAlbum); err != nil {
+func renderTemplate(w http.ResponseWriter, tmpl string, a *album) {
+	t, err := template.ParseFiles("../templates/" + tmpl + ".html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	albums = append(albums, newAlbum)
-	c.IndentedJSON(http.StatusCreated, newAlbum)
+	w.WriteHeader(http.StatusOK)
+	err = t.Execute(w, a)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	log.Print("Successfully rednered template: " + "../templates/" + tmpl + ".html")
 }
