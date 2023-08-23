@@ -21,12 +21,11 @@ var albumList = []album{
 
 func main() {
 	http.HandleFunc("/albums", CORS(albums))
-	// http.HandleFunc("/albums/", albums)
 	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 }
 
 func albums(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "albums", &albumList[1])
+	renderTemplate(w, "albums", albumList)
 }
 
 func CORS(next http.HandlerFunc) http.HandlerFunc {
@@ -45,16 +44,18 @@ func CORS(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func renderTemplate(w http.ResponseWriter, tmpl string, a *album) {
+func renderTemplate(w http.ResponseWriter, tmpl string, albums []album) {
 	t, err := template.ParseFiles("../templates/" + tmpl + ".html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	err = t.Execute(w, a)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	for i := 0; i < len(albums); i++ {
+		err = t.Execute(w, albums[i])
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
-	log.Print("Successfully rednered template: " + "../templates/" + tmpl + ".html")
+	log.Print("Successfully rendered template: " + "../templates/" + tmpl + ".html")
 }
