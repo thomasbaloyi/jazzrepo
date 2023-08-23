@@ -1,9 +1,51 @@
+/* SCSS HEX */
+/* $thistle: #cdb4dbff;
+$fairy-tale: #ffc8ddff;
+$carnation-pink: #ffafccff;
+$uranian-blue: #bde0feff;
+$light-sky-blue: #a2d2ffff; */
+
+
 body {
     background-color: whitesmoke;
+    margin: 0;
     font-family: 'Atkinson Hyperlegible', sans-serif;
 }
 
 .button-ish {
-    background-color: aqua;
-    
+    background-color: aqua;   
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: #a2d2ff;
+}
+
+button {
+    background-color: #cdb4db;
+    padding: 0.5rem;
+    width: 8rem;
+}
+
+button:hover {
+    cursor: pointer;
+    font-weight: bold;
+    border-left: 3px solid black;
+    border-bottom: 3px solid black;
+}
+
+form {
+    border: 3px solid #cdb4db;
+    border-radius: 4px;
+    height: 30rem;
+    width: 50rem;
+}
+
+main {
+    padding: 1rem;
 }

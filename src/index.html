@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script> -->
     <script src="https://unpkg.com/htmx.org@1.9.4"
         integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
         crossorigin="anonymous"></script>
@@ -15,15 +16,22 @@
 </head>
 
 <body>
-    <h1>The Jazz Repo</h1>
 
-    <h3>The only jazz shop you will ever have to visit - and you don't even have to leave your home.</h3>
+    <header>
+        <h2>The Jazz Repository</h2>
+        <span>
+            <button>Albums</button>
+            <button>Artists</button>
+        </span>
+    </header>
+
+    <main>
+        <form action="">
+        
+        </form>
+    </main>
     
-    <button hx-get="http://localhost:8080/albums" hx-swap="innerHTML" hx-trigger="every 30s" hx-confirm="Are you still there?" hx-indicator="#indicator" hx-target="#albums">
-        Get Albums
-    </button>
-    <p id="indicator" class="htmx-indicator">Getting data...</p>
-    <section id="albums"></section>
+
 </body>
 
 </html>
