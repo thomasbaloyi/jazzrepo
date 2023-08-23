@@ -19,9 +19,10 @@
 
     <h3>The only jazz shop you will ever have to visit - and you don't even have to leave your home.</h3>
     
-    <button hx-get="http://localhost:8080/albums" hx-swap="innerHTML" hx-target="#albums">
+    <button hx-get="http://localhost:8080/albums" hx-swap="innerHTML" hx-trigger="every 30s" hx-confirm="Are you still there?" hx-indicator="#indicator" hx-target="#albums">
         Get Albums
     </button>
+    <p id="indicator" class="htmx-indicator">Getting data...</p>
     <section id="albums"></section>
 </body>
 
